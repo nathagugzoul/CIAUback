@@ -20,7 +20,8 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // Endpoint pour recevoir la question et renvoyer la réponse
-app.post('/ask', async (req, res) => { // AJOUTE 'async' ici
+// Endpoint pour recevoir la question et renvoyer la réponse
+app.post('/ask', async (req, res) => {
     const question = req.body.question;
 
     try {
@@ -29,10 +30,13 @@ app.post('/ask', async (req, res) => { // AJOUTE 'async' ici
             prompt: question,
             max_tokens: 150,
         });
-        res.json({ answer: completion.data.choices[0].text }); // envoie la réponse finale
+
+        res.json({ answer: completion.data.choices[0].text }); // une seule réponse
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Erreur lors de la requête OpenAI' });
+    }
+});;
     }
 });
   }
