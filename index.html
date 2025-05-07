@@ -15,7 +15,14 @@
   <button id="submit">Soumettre</button>
 
   <p id="answer"></p>
+<form id="question-form">
+    <input type="text" id="question" name="question" required>
+    <button type="submit">Soumettre à l'IC</button>
+</form>
 
+<p id="response"></p>
+
+<ul id="history"></ul>
   <script>
     document.getElementById('submit').addEventListener('click', async () => {
       const question = document.getElementById('question').value;
