@@ -20,19 +20,21 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // Endpoint pour recevoir la question et renvoyer la réponse
-app.post('/ask', (req, res) => {
+app.post('/ask', async (req, res) => { // AJOUTE 'async' ici
     const question = req.body.question;
-    res.json({ answer: "Réponse test pour " + question });
+
+    try {
+        const completion = await openai.createCompletion({
+            model: 'text-davinci-003',
+            prompt: question,
+            max_tokens: 150,
+        });
+        res.json({ answer: completion.data.choices[0].text }); // envoie la réponse finale
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erreur lors de la requête OpenAI' });
+    }
 });
-    const completion = await openai.createCompletion({
-      model: 'text-davinci-003',
-      prompt: question,
-      max_tokens: 150,
-    });
-    res.json({ answer: completion.data.choices[0].text.trim() });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erreur lors de l’appel à OpenAI' });
   }
 });
 
