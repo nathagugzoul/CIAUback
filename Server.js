@@ -1,35 +1,23 @@
-import express from 'express';
-import cors from 'cors';
-import { OpenAI } from 'openai';
-import dotenv from 'dotenv';
-
-dotenv.config();
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
-const port = process.env.PORT || 10000;
+const PORT = process.env.PORT || 10000;
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || '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'
+app.get('/', (req, res) => {
+  res.send('Backend CIAU en ligne');
 });
 
-app.post('/ask', async (req, res) => {
-  try {
-    const question = req.body.question;
-    const completion = await openai.chat.completions.create({
-      messages: [{ role: 'user', content: question }],
-      model: 'gpt-3.5-turbo'
-    });
-    const answer = completion.choices[0].message.content.trim();
-    res.json({ reponse: answer });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ reponse: "Erreur lors de l'appel OpenAI" });
-  }
+app.post('/ask', (req, res) => {
+  const { question } = req.body;
+  const reponse = `Réponse collective IC : "${question}" implique une exploration collective de la vérité.`;
+  res.json({ reponse });
 });
 
-app.listen(port, () => {
-  console.log(`Serveur backend en ligne sur le port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Serveur backend en ligne sur le port ${PORT}`);
 });
