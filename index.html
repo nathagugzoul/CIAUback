@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>CIAU</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, button { padding: 10px; margin: 5px 0; }
+    #answer { margin-top: 20px; color: green; }
+  </style>
+</head>
+<body>
+  <h1>Pose ta question à l'IC</h1>
+  <input id="question" type="text" placeholder="Pose ta question">
+  <button id="submit">Soumettre</button>
+
+  <p id="answer"></p>
+
+  <script>
+    document.getElementById('submit').addEventListener('click', async () => {
+      const question = document.getElementById('question').value;
+      document.getElementById('answer').innerText = "Envoi en cours...";
+
+      try {
+        const response = await fetch('https://ciauback.onrender.com/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question })
+        });
+
+        const data = await response.json();
+        document.getElementById('answer').innerText = data.answer;
+      } catch (error) {
+        document.getElementById('answer').innerText = "Erreur : " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
