@@ -20,9 +20,10 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // Endpoint pour recevoir la question et renvoyer la réponse
-app.post('/ask', async (req, res) => {
-  try {
-    const { question } = req.body;
+app.post('/ask', (req, res) => {
+    const question = req.body.question;
+    res.json({ answer: "Réponse test pour " + question });
+});
     const completion = await openai.createCompletion({
       model: 'text-davinci-003',
       prompt: question,
